@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,7 +19,7 @@ public class Controller implements Initializable{
     private TableView<Person> tview;
 
     @FXML
-    private TableColumn colName;
+    private TableColumn<Person,String> colName;
 
     @FXML
     private TableColumn colAge;
@@ -32,11 +33,21 @@ public class Controller implements Initializable{
                 );
          tview.getItems().clear();
          tview.setItems(persons);
+         tview.setEditable(true);
+
     }
 
 
     private void initTableViewFactory(){
         colName.setCellValueFactory(new PropertyValueFactory("name"));
+        colName.setEditable(true);
+        colName.setCellFactory(TextFieldTableCell.forTableColumn());
+        colName.setOnEditCommit(event -> getItem(event).setName(event.getNewValue()));
         colAge.setCellFactory(param -> new MoneyTableCell());
     }
+
+    public <S,T> S getItem(TableColumn.CellEditEvent<S,T> t){
+       return t.getTableView().getItems().get(t.getTablePosition().getRow());
+    }
+
 }

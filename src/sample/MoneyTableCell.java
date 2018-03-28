@@ -14,7 +14,7 @@ public class MoneyTableCell extends TableCell<Person,String> {
             item=Convert.amount2RMB(person.getAge());
         }
         Hyperlink label = new Hyperlink(item==null?"":item);
-        label.setOnAction(event -> System.out.println(label.getText()));
+        label.setOnAction(event -> System.out.println(person.toString()));
         setGraphic(label);
     }
 }
